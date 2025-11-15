@@ -1,0 +1,39 @@
+import java.io.InputStream;
+import java.net.URL;
+
+public class SpeedTest {
+    public static void main(String[] args) {
+        try {
+            // لینک فایل کوچیک برای تست (گوگل)
+            String fileUrl = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png";
+
+            System.out.println("Starting speed test...");
+
+            long startTime = System.currentTimeMillis();
+
+            URL url = new URL(fileUrl);
+            InputStream inputStream = url.openStream();
+
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            long totalBytes = 0;
+
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                totalBytes += bytesRead;
+            }
+
+            inputStream.close();
+            long endTime = System.currentTimeMillis();
+
+            double timeInSeconds = (endTime - startTime) / 1000.0;
+            double speedMbps = (totalBytes * 8) / (timeInSeconds * 1_000_000); // تبدیل به مگابیت
+
+            System.out.printf("Downloaded: %.2f KB\n", totalBytes / 1024.0);
+            System.out.printf("Time: %.2f seconds\n", timeInSeconds);
+            System.out.printf("Speed: %.2f Mbps\n", speedMbps);
+
+        } catch (Exception e) {
+            System.out.println("Error occurred: " + e.getMessage());
+        }
+    }
+}
